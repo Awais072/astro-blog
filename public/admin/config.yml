@@ -1,0 +1,25 @@
+# local_backend: true
+
+backend:
+  backend:
+  name: github
+  repo: awais072/astro-blog # (Apna GitHub username aur repo name likhein)
+  branch: main # ya master (jo aapki repo ki branch ho)
+
+# Images kahan save hongi
+media_folder: "src/assets"
+public_folder: "@/images"
+
+# Dashboard collections (Blogs structure)
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog" # Astro ke liye (ya agar Next.js hai to "content/blogs")
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Description (SEO)", name: "description", widget: "string" }
+      - { label: "Featured Image", name: "heroImage", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
