@@ -3,7 +3,7 @@
 backend:
   backend:
   name: github
-  repo: awais072/astro-blog # (Apna GitHub username aur repo name likhein)
+  repo: Awais072/astro-blog # (Apna GitHub username aur repo name likhein)
   branch: main # ya master (jo aapki repo ki branch ho)
 
 # Images kahan save hongi
