@@ -3,11 +3,87 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog Content Manager</title>
+    <title>Admin Login - Blog Manager</title>
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+      #custom-login-modal {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #0f172a; display: flex; align-items: center; justify-content: center; z-index: 999999;
+      }
+      .login-card {
+        background: #ffffff; padding: 2.5rem; border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 100%; max-width: 400px; text-align: center;
+      }
+      .login-card h2 { margin-bottom: 0.5rem; color: #1e293b; font-size: 1.5rem; font-weight: 700; }
+      .login-card p { color: #64748b; font-size: 0.875rem; margin-bottom: 1.5rem; }
+      .input-group { text-align: left; margin-bottom: 1.25rem; }
+      .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.4rem; }
+      .input-group input {
+        width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1;
+        border-radius: 8px; font-size: 0.95rem; outline: none; transition: 0.2s;
+      }
+      .input-group input:focus { border-color: #2563eb; ring: 2px solid #93c5fd; }
+      .login-btn {
+        width: 100%; padding: 0.85rem; background: #2563eb; color: #ffffff;
+        border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+      }
+      .login-btn:hover { background: #1d4ed8; }
+      #error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 1rem; display: none; }
+    </style>
   </head>
   <body>
+    <!-- Custom Email / Password Login Box -->
+    <div id="custom-login-modal">
+      <div class="login-card">
+        <h2>Admin Dashboard</h2>
+        <p>Apna Email aur Password darj karein</p>
+        
+        <form id="admin-login-form">
+          <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="admin-email" placeholder="admin@example.com" required autocomplete="username">
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="login-btn">Login</button>
+          <div id="error-msg">Ghalat email ya password!</div>
+        </form>
+      </div>
+    </div>
+
     <!-- Decap CMS Script -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+      // Session check: agar pehle se login ho chuka ho
+      if (sessionStorage.getItem('admin_authenticated') === 'true') {
+        document.getElementById('custom-login-modal').style.display = 'none';
+      }
+
+      document.getElementById('admin-login-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email = document.getElementById('admin-email').value.trim();
+        const password = document.getElementById('admin-password').value.trim();
+        const errorMsg = document.getElementById('error-msg');
+
+        // Yahan apna aur apne partner ka Email aur Password set karein:
+        const validCredentials = [
+          { email: "admin@myblog.com", pass: "admin12345" },
+          { email: "partner@myblog.com", pass: "partner12345" }
+        ];
+
+        const match = validCredentials.find(u => u.email === email && u.pass === password);
+
+        if (match) {
+          sessionStorage.setItem('admin_authenticated', 'true');
+          document.getElementById('custom-login-modal').style.display = 'none';
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      });
+    </script>
   </body>
 </html>
